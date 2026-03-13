@@ -1,0 +1,323 @@
+‎9. Kurursal algorithm 
+‎V = int(input("Vertices: "))
+‎E = int(input("Edges: "))
+‎
+‎edges = [tuple(map(int, input().split())) for _ in range(E)]
+‎edges.sort(key=lambda x: x[2])
+‎
+‎parent = list(range(V))
+‎
+‎def find(x):
+‎    if parent[x] != x:
+‎        parent[x] = find(parent[x])
+‎    return parent[x]
+‎
+‎print("MST Edges:")
+‎for u, v, w in edges:
+‎    if find(u) != find(v):
+‎        parent[find(u)] = find(v)
+‎        print(u, "--", v, "=", w)
+‎
+‎
+‎
+‎5..Heap using priority queue 
+‎
+‎import heapq
+‎
+‎pq = []
+‎
+‎while True:
+‎    print("\n1. Add Task")
+‎    print("2. Remove Highest Priority Task")
+‎    print("3. Exit")
+‎
+‎    choice = input("Enter choice: ")
+‎
+‎    if choice == '1':
+‎        task = input("Enter task: ")
+‎        priority = int(input("Enter priority: "))
+‎        heapq.heappush(pq, (-priority, task))
+‎        print("Task added")
+‎
+‎    elif choice == '2':
+‎        if pq:
+‎            priority, task = heapq.heappop(pq)
+‎            print("Removed task:", task)
+‎        else:
+‎            print("Priority Queue is empty")
+‎
+‎    elif choice == '3':
+‎        break
+‎
+‎    else:
+‎        print("Invalid choice")
+‎
+‎
+‎10. DFS 
+‎g = {}
+‎
+‎n = int(input("Enter number of edges: "))
+‎for _ in range(n):
+‎    u, v = map(int, input("Enter edge (u v): ").split())
+‎    g.setdefault(u, []).append(v)
+‎
+‎visited = set()
+‎
+‎def dfs(v):
+‎    if v not in visited:
+‎        print(v, end=" ")
+‎        visited.add(v)
+‎        for i in g.get(v, []):
+‎            dfs(i)
+‎
+‎start = int(input("Enter starting vertex: "))
+‎print("DFS Traversal:")
+‎dfs(start)
+‎
+‎bst ------>
+‎class Node:
+‎    def __init__(self,data):
+‎        self.data = data
+‎        self.left = None
+‎        self.right = None
+‎
+‎
+‎def insert(root,data):
+‎    if root is None:
+‎        return Node(data)
+‎
+‎    if data < root.data:
+‎        root.left = insert(root.left,data)
+‎    else:
+‎        root.right = insert(root.right,data)
+‎
+‎    return root
+‎
+‎
+‎def inorder(root):
+‎    if root:
+‎        inorder(root.left)
+‎        print(root.data,end=" ")
+‎        inorder(root.right)
+‎
+‎
+‎def preorder(root):
+‎    if root:
+‎        print(root.data,end=" ")
+‎        preorder(root.left)
+‎        preorder(root.right)
+‎
+‎
+‎def postorder(root):
+‎    if root:
+‎        postorder(root.left)
+‎        postorder(root.right)
+‎        print(root.data,end=" ")
+‎
+‎
+‎# main program
+‎root=None
+‎
+‎values=[50,30,70,20,40,60,80]
+‎
+‎for i in values:
+‎    root=insert(root,i)
+‎
+‎print("Inorder:")
+‎inorder(root)
+‎
+‎print("\nPreorder:")
+‎preorder(root)
+‎
+‎print("\nPostorder:")
+‎postorder(root)
+‎
+‎
+‎
+
+‎
+‎ddl------------>
+‎import os
+‎
+‎class _Node:
+‎    __slots__ = '_element', '_link', '_prev'
+‎
+‎    def __init__(self, element, link, prev):
+‎        self._element = element
+‎        self._link = link
+‎        self._prev = prev
+‎
+‎
+‎class DoublyLL:
+‎    def __init__(self):
+‎        self._head = None
+‎        self._tail = None
+‎        self._size = 0
+‎
+‎    def __len__(self):
+‎        return self._size
+‎
+‎    def isempty(self):
+‎        return self._size == 0
+‎
+‎    def addLast(self, e):
+‎        newest = _Node(e, None, None)
+‎        if self.isempty():
+‎            self._head = newest
+‎            self._tail = newest
+‎        else:
+‎            self._tail._link = newest
+‎            newest._prev = self._tail
+‎            self._tail = newest
+‎        self._size += 1
+‎
+‎    def addFirst(self, e):
+‎        newest = _Node(e, None, None)
+‎        if self.isempty():
+‎            self._head = newest
+‎            self._tail = newest
+‎        else:
+‎            newest._link = self._head
+‎            self._head._prev = newest
+‎            self._head = newest
+‎        self._size += 1
+‎
+‎    def addAnywhere(self, e, index):
+‎        if index > self._size:
+‎            print(f'Index out of range (0 - {self._size})')
+‎        elif index == self._size:
+‎            self.addLast(e)
+‎        elif index == 0:
+‎            self.addFirst(e)
+‎        else:
+‎            newest = _Node(e, None, None)
+‎            p = self._head
+‎            for _ in range(index - 1):
+‎                p = p._link
+‎            newest._link = p._link
+‎            p._link._prev = newest
+‎            newest._prev = p
+‎            p._link = newest
+‎            self._size += 1
+‎
+‎    def removeFirst(self):
+‎        if self.isempty():
+‎            print("List is empty")
+‎            return
+‎        e = self._head._element
+‎        self._head = self._head._link
+‎        self._size -= 1
+‎        if self.isempty():
+‎            self._tail = None
+‎        else:
+‎            self._head._prev = None
+‎        return e
+‎
+‎    def removeLast(self):
+‎        if self.isempty():
+‎            print("List is empty")
+‎            return
+‎        e = self._tail._element
+‎        self._tail = self._tail._prev
+‎        self._size -= 1
+‎        if self.isempty():
+‎            self._head = None
+‎        else:
+‎            self._tail._link = None
+‎        return e
+‎
+‎    def removeAnywhere(self, index):
+‎        if index >= self._size:
+‎            print(f'Index out of range (0 - {self._size-1})')
+‎        elif self.isempty():
+‎            print("List is empty")
+‎        elif index == 0:
+‎            return self.removeFirst()
+‎        elif index == self._size - 1:
+‎            return self.removeLast()
+‎        else:
+‎            p = self._head
+‎            for _ in range(index - 1):
+‎                p = p._link
+‎            e = p._link._element
+‎            p._link = p._link._link
+‎            p._link._prev = p
+‎            self._size -= 1
+‎            return e
+‎
+‎    def display(self):
+‎        if self.isempty():
+‎            print("List is Empty")
+‎            return
+‎        p = self._head
+‎        print("NULL<-->", end='')
+‎        while p:
+‎            print(p._element, end="<-->")
+‎            p = p._link
+‎        print("NULL")
+‎        print(f"Head : {self._head._element}, Tail : {self._tail._element}")
+‎
+‎
+‎def options():
+‎    options_list = [
+‎        'Add Last',
+‎        'Add First',
+‎        'Add Anywhere',
+‎        'Remove First',
+‎        'Remove Last',
+‎        'Remove Anywhere',
+‎        'Display List',
+‎        'Exit'
+‎    ]
+‎    print("MENU")
+‎    for i, option in enumerate(options_list):
+‎        print(f'{i+1}. {option}')
+‎    choice = int(input("Enter choice: "))
+‎    return choice
+‎
+‎
+‎def switch_case(choice):
+‎    os.system('cls')
+‎    if choice == 1:
+‎        elem = int(input("Enter Item: "))
+‎        DL.addLast(elem)
+‎        print("Added Item at Last!\n")
+‎
+‎    elif choice == 2:
+‎        elem = int(input("Enter Item: "))
+‎        DL.addFirst(elem)
+‎        print("Added Item at First!\n")
+‎
+‎    elif choice == 3:
+‎        elem = int(input("Enter Item: "))
+‎        index = int(input("Enter Index: "))
+‎        DL.addAnywhere(elem, index)
+‎
+‎    elif choice == 4:
+‎        print("Removed Element from First:", DL.removeFirst())
+‎
+‎    elif choice == 5:
+‎        print("Removed Element from Last:", DL.removeLast())
+‎
+‎    elif choice == 6:
+‎        index = int(input("Enter Index: "))
+‎        print("Removed Item:", DL.removeAnywhere(index))
+‎
+‎    elif choice == 7:
+‎        print("List:")
+‎        DL.display()
+‎
+‎    elif choice == 8:
+‎        import sys
+‎        sys.exit()
+‎
+‎
+‎if __name__ == '__main__':
+‎    DL = DoublyLL()
+‎    while True:
+‎        try:
+‎            choice = options()
+‎            switch_case(choice)
+‎        except SystemExit:
+‎            print("Exiting program")
+‎            break
