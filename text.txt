@@ -1,0 +1,223 @@
+dll
+
+
+class Node:
+    def __init__(self,data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+
+class DLL:
+    def __init__(self):
+        self.head = None
+
+
+    # insert at beginning
+    def insertFirst(self,data):
+        new = Node(data)
+
+        if self.head != None:
+            self.head.prev = new
+            new.next = self.head
+
+        self.head = new
+
+
+    # insert at end
+    def insertLast(self,data):
+        new = Node(data)
+
+        if self.head == None:
+            self.head = new
+            return
+
+        temp = self.head
+        while temp.next:
+            temp = temp.next
+
+        temp.next = new
+        new.prev = temp
+
+
+    # delete first
+    def deleteFirst(self):
+        if self.head == None:
+            print("List empty")
+            return
+
+        self.head = self.head.next
+
+        if self.head:
+            self.head.prev = None
+
+
+    # delete last
+    def deleteLast(self):
+        if self.head == None:
+            print("List empty")
+            return
+
+        temp = self.head
+        while temp.next:
+            temp = temp.next
+
+        if temp.prev:
+            temp.prev.next = None
+        else:
+            self.head = None
+
+
+    # display
+    def display(self):
+        temp = self.head
+        while temp:
+            print(temp.data,end=" ")
+            temp = temp.next
+
+
+# main
+d = DLL()
+
+d.insertFirst(10)
+d.insertFirst(5)
+d.insertLast(20)
+d.insertLast(30)
+
+print("List:")
+d.display()
+
+d.deleteFirst()
+print("\nAfter delete first:")
+d.display()
+
+d.deleteLast()
+print("\nAfter delete last:")
+d.display()
+
+
+
+
+DFS
+
+g = {}
+
+n = int(input("Enter number of edges: "))
+
+for i in range(n):
+    u, v = map(int, input("Enter edge (u v): ").split())
+
+    if u not in g:
+        g[u] = []
+    g[u].append(v)
+
+visited = []
+
+def dfs(v):
+    if v not in visited:
+        print(v, end=" ")
+        visited.append(v)
+
+        for i in g.get(v, []):   # ✅ safe access
+            dfs(i)
+
+start = int(input("Enter starting vertex: "))
+
+print("DFS Traversal:")
+dfs(start)
+
+
+bst
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+# Insert
+def insert(root, data):
+    if root is None:
+        return Node(data)
+
+    if data < root.data:
+        root.left = insert(root.left, data)
+    else:
+        root.right = insert(root.right, data)
+
+    return root
+
+
+# Inorder
+def inorder(root):
+    if root:
+        inorder(root.left)
+        print(root.data, end=" ")
+        inorder(root.right)
+
+
+# Preorder
+def preorder(root):
+    if root:
+        print(root.data, end=" ")
+        preorder(root.left)
+        preorder(root.right)
+
+
+# Postorder
+def postorder(root):
+    if root:
+        postorder(root.left)
+        postorder(root.right)
+        print(root.data, end=" ")
+
+
+# Delete
+def delete(root, key):
+    if root is None:
+        return root
+
+    if key < root.data:
+        root.left = delete(root.left, key)
+
+    elif key > root.data:
+        root.right = delete(root.right, key)
+
+    else:
+        if root.left is None:
+            return root.right
+        if root.right is None:
+            return root.left
+
+        temp = root.right
+        while temp.left:
+            temp = temp.left
+
+        root.data = temp.data
+        root.right = delete(root.right, temp.data)
+
+    return root
+
+
+# Main program
+root = None
+values = [50,30,70,20,40,60,80]
+
+for v in values:
+    root = insert(root, v)
+
+print("Inorder:")
+inorder(root)
+
+print("\nPreorder:")
+preorder(root)
+
+print("\nPostorder:")
+postorder(root)
+
+root = delete(root, 20)
+
+print("\nAfter deleting 20:")
+inorder(root)
+
+
