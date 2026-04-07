@@ -1,0 +1,57 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+class DoublyLL:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def addFirst(self, x):
+        n = Node(x)
+        if not self.head:
+            self.head = self.tail = n
+        else:
+            n.next = self.head
+            self.head.prev = n
+            self.head = n
+
+    def addLast(self, x):
+        n = Node(x)
+        if not self.tail:
+            self.head = self.tail = n
+        else:
+            self.tail.next = n
+            n.prev = self.tail
+            self.tail = n
+
+    def display(self):
+        if not self.head:
+            print("List is Empty")
+            return
+        p = self.head
+        print("NULL<-->", end="")
+        while p:
+            print(p.data, end="<-->")
+            p = p.next
+        print("NULL")
+
+DL = DoublyLL()
+
+while True:
+    print("\n1.Add Last  2.Add First  3.Display  4.Exit")
+    ch = int(input("Enter choice: "))
+
+    if ch == 1:
+        DL.addLast(int(input("Enter item: ")))
+    elif ch == 2:
+        DL.addFirst(int(input("Enter item: ")))
+    elif ch == 3:
+        DL.display()
+    elif ch == 4:
+        print("Exiting program")
+        break
+    else:
+        print("Invalid choice")
